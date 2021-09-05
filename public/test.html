@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- 文字コード（UTF-8）の指定 -->
+    <meta charset="UTF-8" />
+    <!-- タイトルの指定 -->
+    <title>React Sample</title>
+    <!-- スタイルシート（bootstrap）を参照 -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      crossorigin="anonymous"
+    />
+    <!-- React 本体のスクリプト読み込み -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <!-- React の仮想DOMのスクリプト読み込み -->
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <!-- babel の読み込み（JSXタグをJavaScriptコードに変換） -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <h1 class="bg-primary text-white display-4">React Sample</h1>
+    <div class="container mt-3">
+      <!-- ここに React（下記JSX）を描画 -->
+      <div id="root">wait...</div>
+    </div>
+    <script type="text/babel">
+      // React の表示を組み込むタグの Element オブジェクトを取得 -->
+      let dom = document.querySelector("#root");
+
+      // JSX に値を埋め込む変数
+      let title = "React page.";
+      let message = "This is React sample.";
+      let flag1 = true;
+      let flag2 = false;
+      let data = [
+        { name: "太郎", mail: "taro@example.com", age: 20 },
+        { name: "次郎", mail: "jiro@example.com", age: 23 },
+        { name: "三郎", mail: "saburo@example.com", age: 21 },
+        { name: "四郎", mail: "shiro@example.com", age: 26 },
+        { name: "五郎", mail: "goro@example.com", age: 24 },
+      ];
+
+      // JSX に値を埋め込む関数
+      let printMsg = function (msg, size, color) {
+        const style = {
+          fontSize: size + "pt",
+          fontWeight: "700",
+          color: color,
+          border: "1px solid " + color,
+        };
+        return <p style={style}>{msg}</p>;
+      };
+
+      // リストを生成する関数
+      let funcList = function () {
+        const items = data.map((value, index) => (
+          // key を設定する必要あり
+          <li key={index} className="list-group-item">
+            <a href={"mailto:" + value.mail}>
+              {value.name}({value.age})
+            </a>
+          </li>
+        ));
+        return <ul className="list-group mt-4">{items}</ul>;
+      };
+
+      // JSX（タグをテキストではなく値として記述していることに注意）
+      // ※ ルートエレメントは１つだけ
+      // ※ class は JavaScript の予約語であるため className とする
+      let el = (
+        <div>
+          {/* 関数 */}
+          {(() => (
+            <div>
+              <h4>{title}</h4>
+              <h6>{message}</h6>
+            </div>
+          ))()}
+          {/* 条件分岐と関数呼び出し */}
+          {flag1 && (
+            <div className="alert alert-secondary mt-3">
+              {printMsg("条件分岐：真", 24, "#333")}
+            </div>
+          )}
+          {/* 三項演算子 */}
+          {flag2 ? (
+            <div className="alert alert-secondary mt-3">
+              {printMsg("三項演算子：真", 24, "#333")}
+            </div>
+          ) : (
+            <div className="alert alert-secondary mt-3">
+              {printMsg("三項演算子：偽", 24, "#333")}
+            </div>
+          )}
+          {/* リスト表示（map） */}
+          {funcList()}
+        </div>
+      );
+      // JSX → 仮想 Element を、指定した Element オブジェクトに描画
+      ReactDOM.render(el, dom);
+    </script>
+  </body>
+</html>
